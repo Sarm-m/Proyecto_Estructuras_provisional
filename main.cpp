@@ -1,4 +1,5 @@
-#include "comandos.h"
+#include "ListaComandos.h"
+#include "ListaElementos.h"
 #include <iostream>
 #include <sstream>
 using namespace std;
@@ -6,10 +7,9 @@ using namespace std;
 
 int main (){
 
-    Lista_de_comandos listaC;
-    Lista_de_elementos listaE;
-    inicializarC(listaC);
-    inicializarE(listaE);
+    ListaComandos listaC;
+    ListaElementos listaE;
+    
 
     string entrada;
     while(true){
@@ -24,13 +24,13 @@ int main (){
         if (comando == "cargar_comandos"){
             string archivo;
             iss >> archivo;
-            cargar_comandos(listaC, archivo);
+            listaC.cargarDesdeArchivo(archivo); //este es el metodo del objeto al cual se llamará cuando le pasemos el comando y llama carga los comandos
 
 
         } else if (comando == "cargar_elementos"){
             string archivo;
             iss >> archivo;
-            cargar_elementos(listaE, archivo);
+            listaE.cargarDesdeArchivo(archivo); //este es el metodo del objeto que lee una lista de elementos
 
 
         } else if (comando == "agregar_movimiento"){
