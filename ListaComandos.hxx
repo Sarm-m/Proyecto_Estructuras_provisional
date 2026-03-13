@@ -144,3 +144,36 @@ int ListaComandos::obtenerCantidad() const{
 NodoComando* ListaComandos::obtenerCabeza() const{
     return cabeza;
 }
+
+    void agregarMovimiento(TipoMovimiento tipo, float magnitud, string unidad){
+
+        //TODO que implementa Santiago
+
+    } 
+
+
+
+    void agregarAnalisis(TipoAnalisis tipo, string objeto, string comentario){
+
+        //TODO que implementa Santiago
+
+
+    }  
+
+
+
+    void guardar(string nombre_archivo){
+
+        //TODO que implementa Santiago
+
+
+    }
+
+
+
+    void simularComandos(float coordX, float coordY){
+
+        //TODO que implementa sebastian
+
+
+    }

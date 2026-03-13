@@ -127,3 +127,26 @@ int ListaElementos::obtenerCantidad() const{
 NodoElemento* ListaElementos::obtenerCabeza() const{
     return cabeza;
 }
+
+
+
+void agregarElemento(TipoElemento tipo, float tamano, string unidad, float x, float y){
+
+
+    //TODO que implementa Santiago
+
+
+
+}
+
+
+
+
+void guardar (string nombre_archivo){
+    
+
+    //TODO que implementa Santiago
+
+
+
+}

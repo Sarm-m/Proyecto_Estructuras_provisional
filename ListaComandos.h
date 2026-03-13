@@ -1,7 +1,7 @@
 #pragma once
 #include "NodoComando.h"
 using namespace std;
-
+X
 
 
 //Lista de comandos
@@ -13,6 +13,10 @@ public:
     void vaciar();
     void insertarAlFinal(NodoComando* nuevo);
     void cargarDesdeArchivo(string nombre_archivo);
+    void agregarMovimiento(TipoMovimiento tipo, float magnitud, string unidad); //Santiago
+    void agregarAnalisis(TipoAnalisis tipo, string objeto, string comentario);  //Santiago
+    void guardar(string nombre_archivo);    //Santiago
+    void simularComandos(float coordX, float coordY);   //Sebastian
     int obtenerCantidad() const;
     NodoComando* obtenerCabeza() const;
 
