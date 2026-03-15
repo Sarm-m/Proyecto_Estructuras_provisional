@@ -15,7 +15,18 @@ ListaComandos::~ListaComandos(){
     vaciar();
 }
 
+string movimientoATexto(TipoMovimiento t){
+    if(t == AVANZAR) return "avanzar";
+    if(t == GIRAR) return "girar";
+    return "";
+}
 
+string analisisATexto(TipoAnalisis t){
+    if(t == FOTOGRAFIAR) return "fotografiar";
+    if(t == COMPOSICION) return "composicion";
+    if(t == PERFORAR) return "perforar";
+    return "";
+}
 
 void ListaComandos::vaciar(){
 
@@ -145,28 +156,70 @@ NodoComando* ListaComandos::obtenerCabeza() const{
     return cabeza;
 }
 
-    void agregarMovimiento(TipoMovimiento tipo, float magnitud, string unidad){
+    void ListaComandos::agregarMovimiento(TipoMovimiento tipo, float magnitud, string unidad){
 
-        //TODO que implementa Santiago
+        if(magnitud <= 0){
+            cout << "(Formato erroneo) La informacion del movimiento no corresponde a los datos esperados (tipo, magnitud, unidad)." << endl;
+            return;
+        }
 
+        NodoComando* nuevo = new NodoComando(MOVIMIENTO);
+        nuevo -> fijarMovimiento(tipo, magnitud, unidad);
+        insertarAlFinal(nuevo);
+
+        cout << "El comando de movimiento ha sido agregado exitosamente." << endl;
     } 
 
 
 
-    void agregarAnalisis(TipoAnalisis tipo, string objeto, string comentario){
+    void ListaComandos::agregarAnalisis(TipoAnalisis tipo, string objeto, string comentario){
 
-        //TODO que implementa Santiago
+        if (objeto == ""){
+            cout << "(Formato erróneo) La información del análisis no corresponde a los datos esperados (tipo, objeto, comentario)." << endl;
+            return;
+        }
 
+        NodoComando* nuevo = new NodoComando(ANALISIS);
+        nuevo -> fijarAnalisis(tipo, objeto, comentario);
+        insertarAlFinal(nuevo);
 
+        cout << "El comando de análisis ha sido agregado exitosamente." << endl;
     }  
 
 
 
-    void guardar(string nombre_archivo){
+    void ListaComandos::guardar(string nombre_archivo){
 
-        //TODO que implementa Santiago
+        if (cabeza == nullptr){
+            cout << "(No hay información) La información requerida no está almacenada en memoria." << endl;
+            return;
+        }
 
+        ofstream archivo(nombre_archivo);
 
+        if(!archivo.is_open()){
+            cout << "(Problemas en archivo) Error guardando en " << nombre_archivo << "." << endl;
+            return;
+        }
+
+        NodoComando* actual = cabeza;
+
+        while(actual != nullptr){
+            if (actual -> obtenerTipo() == MOVIMIENTO){
+                archivo << movimientoATexto(actual -> obtenerTipoMov()) << " " << actual -> obtenerMagnitud() << " " << actual -> obtenerUnidad() << endl;
+            }
+            else if (actual -> obtenerTipo() == ANALISIS){
+                archivo << analisisATexto(actual -> obtenerTipoAnls())<< " " << actual -> obtenerObjeto();
+
+                if (actual -> obtenerComentario() != ""){
+                    archivo << " '" << actual -> obtenerComentario() << "'";
+                }
+                archivo << endl;
+            }
+            actual = actual -> obtenerSiguiente();
+        }
+        archivo.close();
+        cout << "(Escritura exitosa) La información ha sido guardada en " << nombre_archivo << "." << endl;
     }
 
 

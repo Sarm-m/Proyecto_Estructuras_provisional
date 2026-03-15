@@ -16,7 +16,13 @@ ListaElementos::~ListaElementos(){
     vaciar();
 }
 
-
+string elementoATexto(TipoElemento t){
+    if(t == ROCA) return "roca";
+    if(t == CRATER) return "crater";
+    if(t == MONTICULO) return "monticulo";
+    if(t == DUNA) return "duna";
+    return "";
+}
 
 void ListaElementos::vaciar(){
 
@@ -130,23 +136,44 @@ NodoElemento* ListaElementos::obtenerCabeza() const{
 
 
 
-void agregarElemento(TipoElemento tipo, float tamano, string unidad, float x, float y){
+void ListaElementos::agregarElemento(TipoElemento tipo, float tamano, string unidad, float x, float y){
 
+    if (tamano <= 0){
+        cout << "(Formato erróneo) La información del elemento no corresponde a los datos esperados (tipo, tamaño, unidad, x, y)." << endl;
+        return;
+    }
 
-    //TODO que implementa Santiago
+    NodoElemento* nuevo = new NodoElemento(tipo);
+    nuevo -> fijarElemento(tipo, tamano, unidad, x, y);
+    insertarAlFinal(nuevo);
 
-
-
+    cout << "El elemento ha sido agregado exitosamente." << endl;
 }
 
 
 
 
-void guardar (string nombre_archivo){
+void ListaElementos::guardar (string nombre_archivo){
     
+    if(cabeza == nullptr){
+        cout << "(No hay información) La información requerida no está almacenada en memoria." << endl;
+        return;
+    }
 
-    //TODO que implementa Santiago
+    ofstream archivo(nombre_archivo);
 
+    if(!archivo.is_open()){
+        cout << "(Problemas en archivo) Error guardando en " << nombre_archivo << "." << endl;
+        return;
+    }
 
+    NodoElemento* actual = cabeza;
 
+    while (actual != nullptr){
+        archivo << elementoATexto(actual -> obtenerTipo()) << " " << actual -> obtenerTamano() << " " << actual -> obtenerUnidad() << " " << actual -> obtenerCoordenadaX() << " " << actual -> obtenerCoordenadaY() << endl;
+        actual = actual -> obtenerSiguiente();
+    }
+    archivo.close();
+
+    cout << "(Escritura exitosa) La información ha sido guardada en " << nombre_archivo << "." << endl;
 }
