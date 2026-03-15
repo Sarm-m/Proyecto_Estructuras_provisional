@@ -34,20 +34,94 @@ int main (){
 
 
         } else if (comando == "agregar_movimiento"){
-            //TODO
+            string tipoStr, unidad;
+            float magnitud;
+
+            iss >> tipoStr >> magnitud >> unidad;
+
+            TipoMovimiento tipo;
+
+            if (tipoStr == "avanzar"){
+                tipo = AVANZAR;
+            } else if (tipoStr == "girar"){
+                tipo = GIRAR;
+            } else {
+                cout << "(Formato erroneo) Tipo de movimiento invalido." << endl;
+                continue;
+            }
+
+            listaC.agregarMovimiento(tipo, magnitud, unidad);
 
 
         } else if (comando == "agregar_analisis"){
-            //TODO
+            string tipoStr, objeto;
+            iss >> tipoStr >> objeto;
+            string comentario = "";
+            string resto;
+            getline(iss, resto);
+
+            if (!resto.empty()){
+                int inicio = resto.find('\'');
+                int fin = resto.rfind('\'');
+                if (inicio != string::npos && fin != inicio){
+                    comentario = resto.substr(inicio + 1, fin - inicio - 1);
+                }
+            }
+
+            TipoAnalisis tipo;
+
+            if (tipoStr == "fotografiar"){
+                tipo = FOTOGRAFIAR;
+            } else if (tipoStr == "composicion"){
+                tipo = COMPOSICION;
+            } else if (tipoStr == "perforar"){
+                tipo = PERFORAR;
+            } else {
+                cout << "(Formato erroneo) Tipo de analisis invalido." << endl;
+                continue;
+            }
+
+            listaC.agregarAnalisis(tipo, objeto, comentario);
 
 
         } else if (comando == "agregar_elemento"){
-            //TODO
+            string tipoStr, unidad;
+            float tamano, x, y;
+
+            iss >> tipoStr >> tamano >> unidad >> x >> y;
+
+            TipoElemento tipo;
+
+            if (tipoStr == "roca"){
+                tipo = ROCA;
+            } else if (tipoStr == "crater"){
+                tipo = CRATER;
+            } else if (tipoStr == "monticulo"){
+                tipo = MONTICULO;
+            } else if (tipoStr == "duna"){
+                tipo = DUNA;
+            } else {
+                cout << "(Formato erroneo) Tipo de elemento invalido." << endl;
+                continue;
+            }
+
+            listaE.agregarElemento(tipo, tamano, unidad, x, y);
 
 
         } else if (comando == "guardar"){
-            //TODO
+            string tipo, archivo;
+            iss >> tipo >> archivo;
 
+            if (tipo == "comandos"){
+                listaC.guardar(archivo);
+            }
+            else if (tipo == "elementos"){
+                listaE.guardar(archivo);
+            }
+            else{
+                cout << "(Formato erroneo) Tipo de archivo invalido." << endl;
+            }
+            
 
         } else if (comando == "simular_comandos"){
             //TODO
