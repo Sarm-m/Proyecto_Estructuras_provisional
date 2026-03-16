@@ -69,7 +69,7 @@ void ListaElementos::cargarDesdeArchivo(string nombre_archivo){
     }
 
     if (archivo.peek() == EOF){
-        cout << "(Archivo vacío) " << nombre_archivo << " no contiene comandos." << endl;
+        cout << "(Archivo vacío) " << nombre_archivo << " no contiene elementos." << endl;
         return;
     }
 
@@ -117,7 +117,7 @@ void ListaElementos::cargarDesdeArchivo(string nombre_archivo){
     }
 
     
-    cout << cantidad << " comandos cargados correctamente desde " << nombre_archivo << "." << endl;
+    cout << cantidad << " elementos cargados correctamente desde " << nombre_archivo << "." << endl;
 
 }
 

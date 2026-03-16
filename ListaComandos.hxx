@@ -30,6 +30,10 @@ string analisisATexto(TipoAnalisis t){
     return "";
 }
 
+
+
+
+
 void ListaComandos::vaciar(){
 
     NodoComando* actual = cabeza; //empieza creando un puntero que recorre la lista
@@ -169,6 +173,11 @@ NodoComando* ListaComandos::obtenerCabeza() const{
             return;
         }
 
+        if (!validarUnidad(tipo, unidad)){
+            cout << "(Formato erróneo) La información del movimiento no corresponde a los datos esperados (tipo, magnitud, unidad)." << endl;
+            return;
+        }
+
         NodoComando* nuevo = new NodoComando(MOVIMIENTO);
         nuevo -> fijarMovimiento(tipo, magnitud, unidad);
         insertarAlFinal(nuevo);
@@ -233,7 +242,7 @@ NodoComando* ListaComandos::obtenerCabeza() const{
     void ListaComandos::simularComandos(float coordX, float coordY){
 
         if (cabeza == nullptr){
-            cout << "(No hay información) La información requerida no está almacenado en memoria." << endl;
+            cout << "(No hay información) La información requerida no está almacenada en memoria." << endl;
             return;
         }
 

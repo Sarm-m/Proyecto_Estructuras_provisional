@@ -37,8 +37,10 @@ int main (){
             string tipoStr, unidad;
             float magnitud;
 
-            iss >> tipoStr >> magnitud >> unidad;
-
+            if (!(iss >> tipoStr >> magnitud >> unidad)){
+                cout << "(Formato erróneo) La información del elemento no corresponde a los datos esperado (tipo, magnitud, unidad)." << endl;
+                continue;
+            }
             TipoMovimiento tipo;
 
             if (tipoStr == "avanzar"){
@@ -46,7 +48,7 @@ int main (){
             } else if (tipoStr == "girar"){
                 tipo = GIRAR;
             } else {
-                cout << "(Formato erroneo) Tipo de movimiento invalido." << endl;
+                cout << "(Formato erróneo) Tipo de movimiento invalido." << endl;
                 continue;
             }
 
@@ -77,7 +79,7 @@ int main (){
             } else if (tipoStr == "perforar"){
                 tipo = PERFORAR;
             } else {
-                cout << "(Formato erroneo) Tipo de analisis invalido." << endl;
+                cout << "(Formato erróneo) Tipo de analisis invalido." << endl;
                 continue;
             }
 
@@ -88,7 +90,10 @@ int main (){
             string tipoStr, unidad;
             float tamano, x, y;
 
-            iss >> tipoStr >> tamano >> unidad >> x >> y;
+            if (!(iss >> tipoStr >> tamano >> unidad >> x >> y)){
+                cout << "(Formato erróneo) La información del elemento no corresponde a los datos esperado (tipo, tamaño, unidad, x, y)." << endl;
+                continue;
+            }
 
             TipoElemento tipo;
 
@@ -101,7 +106,7 @@ int main (){
             } else if (tipoStr == "duna"){
                 tipo = DUNA;
             } else {
-                cout << "(Formato erroneo) Tipo de elemento invalido." << endl;
+                cout << "(Formato erróneo) Tipo de elemento invalido." << endl;
                 continue;
             }
 
@@ -119,7 +124,7 @@ int main (){
                 listaE.guardar(archivo);
             }
             else{
-                cout << "(Formato erroneo) Tipo de archivo invalido." << endl;
+                cout << "(Formato erróneo) Tipo de archivo invalido." << endl;
             }
             
 
@@ -140,6 +145,8 @@ int main (){
 
         } else if (comando == "salir"){
             break;
+        } else {
+            cout << "Comando no reconocido: " << comando << endl;
         }
     }
 
