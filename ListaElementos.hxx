@@ -92,10 +92,9 @@ void ListaElementos::cargarDesdeArchivo(string nombre_archivo){
         //validacion de tipo para crear un nuevo nodo
         if (tipo == "roca" || tipo == "crater" || tipo == "monticulo" || tipo == "duna"){
 
-            iss >> tamano;
-            iss >> unidad;
-            iss >> coordx;
-            iss >> coordy;
+            if (!(iss >> tamano >> unidad >> coordx >> coordy)){
+                continue;
+            }
 
             
 

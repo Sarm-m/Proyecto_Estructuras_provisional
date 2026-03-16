@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cmath>
 using namespace std;
 
 //constructor
@@ -37,6 +38,9 @@ void ListaComandos::vaciar(){
         delete actual;                  //elimina el nodo actual que se está leyendo para liberar memoria
         actual = siguiente;             //se libera la memoria del nodo que se recorre "actual" para evitar memory leak
     }
+
+    cabeza = nullptr;
+    cantidad = 0;
 
 }
 
@@ -91,8 +95,9 @@ void ListaComandos::cargarDesdeArchivo(string nombre_archivo){
         //validacion de tipo para crear un nuevo nodo
         if (tipo == "avanzar" || tipo == "girar"){
 
-            iss >> magnitud;
-            iss >> unidad;
+            if (!(iss >> magnitud >> unidad)){
+                continue;
+            }
 
             //crea nuevo nodo de movimiento
             NodoComando* nuevo = new NodoComando(MOVIMIENTO);
@@ -107,7 +112,9 @@ void ListaComandos::cargarDesdeArchivo(string nombre_archivo){
         }else if (tipo == "fotografiar" || tipo == "composicion" || tipo == "perforar"){
         
             string objeto;
-            iss >> objeto;
+            if (!(iss >> objeto)){
+                continue;
+            }
 
             //se debe leer un comentario opcionanl - ayuda de ChatGPT inicio
             string comentario = "";
@@ -115,8 +122,8 @@ void ListaComandos::cargarDesdeArchivo(string nombre_archivo){
             getline(iss, opcional);
 
             if (!opcional.empty()){
-                int inicio = opcional.find('\'');
-                int fin = opcional.rfind('\'');
+                string::size_type inicio = opcional.find('\'');
+                string::size_type fin = opcional.rfind('\'');
                 if (inicio != string::npos && inicio != fin){
                     comentario = opcional.substr(inicio + 1, fin - inicio - 1);
                 }
@@ -224,9 +231,51 @@ NodoComando* ListaComandos::obtenerCabeza() const{
 
 
 
-    void simularComandos(float coordX, float coordY){
+    void ListaComandos::simularComandos(float coordX, float coordY){
 
-        //TODO que implementa sebastian
+        if (cabeza == nullptr){
+            cout << "La informacion requerida no esta almacenada en memoria." << endl;
+            return;
+        }
 
+        const double PI = 3.14159265358979323846;
+        double x = coordX;
+        double y = coordY;
+        double angulo = 0.0;
 
+        NodoComando* actual = cabeza;
+
+        while (actual != nullptr){
+            if (actual->obtenerTipo() == MOVIMIENTO){
+                double magnitud = actual->obtenerMagnitud();
+                string unidad = actual->obtenerUnidad();
+
+                if (actual->obtenerTipoMov() == AVANZAR){
+                    double distancia = magnitud;
+
+                    if (unidad == "cm"){
+                        distancia /= 100.0;
+                    } else if (unidad == "km"){
+                        distancia *= 1000.0;
+                    }
+
+                    x = x + distancia * cos(angulo);
+                    y = y + distancia * sin(angulo);
+                } else if (actual->obtenerTipoMov() == GIRAR){
+                    double giro = magnitud;
+
+                    if (unidad == "grd"){
+                        giro = giro * PI / 180.0;
+                    }
+
+                    angulo = angulo + giro;
+                }
+            }
+
+            actual = actual->obtenerSiguiente();
+        }
+
+        cout << "(Resultado exitoso) La simulacion de los comandos, a partir de la posicion ("
+             << coordX << ", " << coordY << "), deja al robot en la nueva posicion ("
+             << x << ", " << y << ")." << endl;
     }

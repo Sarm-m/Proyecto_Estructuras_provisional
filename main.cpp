@@ -35,9 +35,12 @@ int main (){
 
         } else if (comando == "agregar_movimiento"){
             string tipoStr, unidad;
-            float magnitud;
+            float magnitud = 0;
 
-            iss >> tipoStr >> magnitud >> unidad;
+            if (!(iss >> tipoStr >> magnitud >> unidad)){
+                cout << "(Formato erroneo) La informacion del movimiento no corresponde a los datos esperados (tipo, magnitud, unidad)." << endl;
+                continue;
+            }
 
             TipoMovimiento tipo;
 
@@ -55,14 +58,17 @@ int main (){
 
         } else if (comando == "agregar_analisis"){
             string tipoStr, objeto;
-            iss >> tipoStr >> objeto;
+            if (!(iss >> tipoStr >> objeto)){
+                cout << "(Formato erroneo) La informacion del analisis no corresponde a los datos esperados (tipo, objeto, comentario)." << endl;
+                continue;
+            }
             string comentario = "";
             string resto;
             getline(iss, resto);
 
             if (!resto.empty()){
-                int inicio = resto.find('\'');
-                int fin = resto.rfind('\'');
+                string::size_type inicio = resto.find('\'');
+                string::size_type fin = resto.rfind('\'');
                 if (inicio != string::npos && fin != inicio){
                     comentario = resto.substr(inicio + 1, fin - inicio - 1);
                 }
@@ -86,9 +92,12 @@ int main (){
 
         } else if (comando == "agregar_elemento"){
             string tipoStr, unidad;
-            float tamano, x, y;
+            float tamano = 0, x = 0, y = 0;
 
-            iss >> tipoStr >> tamano >> unidad >> x >> y;
+            if (!(iss >> tipoStr >> tamano >> unidad >> x >> y)){
+                cout << "(Formato erroneo) La informacion del elemento no corresponde a los datos esperados (tipo, tamano, unidad, x, y)." << endl;
+                continue;
+            }
 
             TipoElemento tipo;
 
@@ -124,7 +133,12 @@ int main (){
             
 
         } else if (comando == "simular_comandos"){
-            //TODO
+            float coordX = 0, coordY = 0;
+            if (!(iss >> coordX >> coordY)){
+                cout << "(Formato erroneo) La informacion de la simulacion no corresponde a los datos esperados (x, y)." << endl;
+                continue;
+            }
+            listaC.simularComandos(coordX, coordY);
 
 
         } else if (comando == "ayuda"){
