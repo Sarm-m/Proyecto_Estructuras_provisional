@@ -61,8 +61,8 @@ int main (){
             getline(iss, resto);
 
             if (!resto.empty()){
-                int inicio = resto.find('\'');
-                int fin = resto.rfind('\'');
+                size_t inicio = resto.find('\'');
+                size_t fin = resto.rfind('\'');
                 if (inicio != string::npos && fin != inicio){
                     comentario = resto.substr(inicio + 1, fin - inicio - 1);
                 }
@@ -124,7 +124,13 @@ int main (){
             
 
         } else if (comando == "simular_comandos"){
-            //TODO
+            float coordX, coordY;
+            if (!(iss >> coordX >> coordY)){
+                cout << "(Formato erróneo) La información no corresponde a los datos esperados (coordX, coordY)." << endl;
+
+            }else{
+                listaC.simularComandos(coordX, coordY);
+            }
 
 
         } else if (comando == "ayuda"){

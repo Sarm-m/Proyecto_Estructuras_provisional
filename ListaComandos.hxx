@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cmath>
+#include <iomanip>
 using namespace std;
 
 //constructor
@@ -38,6 +40,10 @@ void ListaComandos::vaciar(){
         actual = siguiente;             //se libera la memoria del nodo que se recorre "actual" para evitar memory leak
     }
 
+    cabeza = nullptr;
+    cantidad = 0;
+
+
 }
 
 
@@ -65,12 +71,12 @@ void ListaComandos::cargarDesdeArchivo(string nombre_archivo){
     ifstream archivo (nombre_archivo);
 
     if (!archivo.is_open()){
-        cout << "Error: El archivo no se puede abrir" << endl;
+        cout << "(Archivo erróneo) " << nombre_archivo << " no se encuentra o no puede leerse." << endl;
         return;
     }
 
     if (archivo.peek() == EOF){
-        cout << "El archivo que quieres cargar, está vacío" << endl;
+        cout << "(Archivo vacío) " << nombre_archivo << " no contiene comandos." << endl;
         return;
     }
 
@@ -115,8 +121,8 @@ void ListaComandos::cargarDesdeArchivo(string nombre_archivo){
             getline(iss, opcional);
 
             if (!opcional.empty()){
-                int inicio = opcional.find('\'');
-                int fin = opcional.rfind('\'');
+                size_t inicio = opcional.find('\'');
+                size_t fin = opcional.rfind('\'');
                 if (inicio != string::npos && inicio != fin){
                     comentario = opcional.substr(inicio + 1, fin - inicio - 1);
                 }
@@ -138,7 +144,7 @@ void ListaComandos::cargarDesdeArchivo(string nombre_archivo){
     }
 
     
-    cout << cantidad << " comandos se han cargado correctamente desde: " << nombre_archivo << "." << endl;
+    cout << cantidad << " comandos cargados correctamente desde " << nombre_archivo << "." << endl;
 
 
 }
@@ -159,7 +165,7 @@ NodoComando* ListaComandos::obtenerCabeza() const{
     void ListaComandos::agregarMovimiento(TipoMovimiento tipo, float magnitud, string unidad){
 
         if(magnitud <= 0){
-            cout << "(Formato erroneo) La informacion del movimiento no corresponde a los datos esperados (tipo, magnitud, unidad)." << endl;
+            cout << "(Formato erróneo) La información del movimiento no corresponde a los datos esperados (tipo, magnitud, unidad)." << endl;
             return;
         }
 
@@ -224,9 +230,51 @@ NodoComando* ListaComandos::obtenerCabeza() const{
 
 
 
-    void simularComandos(float coordX, float coordY){
+    void ListaComandos::simularComandos(float coordX, float coordY){
 
-        //TODO que implementa sebastian
+        if (cabeza == nullptr){
+            cout << "(No hay información) La información requerida no está almacenado en memoria." << endl;
+            return;
+        }
+
+        float x = coordX;
+        float y = coordY;
+        float angulo = 0.0;
+
+        NodoComando* actual = cabeza;
+
+        while (actual != nullptr){
+            if (actual->obtenerTipo() == MOVIMIENTO){
+
+                float magnitud = actual->obtenerMagnitud();
+                string unidad = actual->obtenerUnidad();
+
+                if (actual->obtenerTipoMov() == AVANZAR){
+
+                    float distancia = magnitud;
+
+                    if (unidad == "km") distancia = magnitud*1000;
+                    else if (unidad == "dm") distancia = magnitud/10;
+                    else if (unidad == "cm") distancia = magnitud/100;
+
+                    x += distancia * cos(angulo);
+                    y += distancia * sin(angulo);
+
+
+
+                } else if (actual->obtenerTipoMov() == GIRAR){
+
+                    float rotacion = magnitud;
+
+                    if (unidad == "grd") rotacion = magnitud * (float)M_PI/180;
+
+                    angulo += rotacion;
+                }
+            }
+            actual = actual->obtenerSiguiente();
+        }
+
+        cout << "La simulación de los comandos, a partir de la posición (" << fixed << setprecision(2) << coordX << "," << coordY << "), deja al robot en la nueva posición (" << fixed << setprecision(2) << x << "," << y << ")." << endl;
 
 
     }

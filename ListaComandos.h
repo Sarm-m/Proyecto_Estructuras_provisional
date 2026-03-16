@@ -1,7 +1,7 @@
 #pragma once
 #include "NodoComando.h"
 using namespace std;
-X
+
 
 
 //Lista de comandos

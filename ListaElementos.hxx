@@ -64,12 +64,12 @@ void ListaElementos::cargarDesdeArchivo(string nombre_archivo){
     ifstream archivo (nombre_archivo);
 
     if (!archivo.is_open()){
-        cout << "Error: El archivo no se puede abrir" << endl;
+        cout << "(Archivo erróneo) " << nombre_archivo << " no se encuentra o no puede leerse." << endl;
         return;
     }
 
     if (archivo.peek() == EOF){
-        cout << "El archivo que quieres cargar, está vacío" << endl;
+        cout << "(Archivo vacío) " << nombre_archivo << " no contiene comandos." << endl;
         return;
     }
 
@@ -117,7 +117,7 @@ void ListaElementos::cargarDesdeArchivo(string nombre_archivo){
     }
 
     
-    cout << cantidad << " elementos se han cargado correctamente desde: " << nombre_archivo << "." << endl;
+    cout << cantidad << " comandos cargados correctamente desde " << nombre_archivo << "." << endl;
 
 }
 
